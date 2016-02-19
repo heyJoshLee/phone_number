@@ -1,17 +1,15 @@
 class PhoneNumber
   attr_accessor :number
+  @@invalid = "0000000000"
+
   def initialize(input)
 
     if input =~ /[a-zA-Z]/
-      @number = "0000000000"
+      @number = @@invalid
     else
       @number = input.gsub(/\D/, "")
-      if @number.length == 11 && @number[0] == "1"
-        @number[0] = ""
-      end
-      if @number.length != 10
-        @number = "0000000000"
-      end
+      @number[0] = "" if @number =~ /^1\d{10}/
+      @number = @@invalid if @number.length != 10
     end
   end
 
@@ -20,7 +18,7 @@ class PhoneNumber
   end
 
   def to_s
-    "(" + @number[0..2] + ") " + @number[3..5] + "-" + @number[6..9]
+    "(" + @number[0..2] + ") " + @number[3..5] + "-" + @number[6..-1]
   end
 
 end
